@@ -426,6 +426,7 @@ const utils = {
   },
   resolveValue,
   print,
+  parse,
 
   mergeNode: (node, other) => {
     const customizer = (objValue, srcValue) => {

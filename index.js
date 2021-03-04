@@ -92,6 +92,7 @@ class GqlBuilder {
     return (...args) => {
       const [name, doc] = args;
       if(doc) {
+        // for setting doc
         queryContainer.set(name, doc);
         return this;
       } else {
@@ -106,7 +107,15 @@ class GqlBuilder {
           return this;
         } else  {
           if(queryContainer.has(name)) {
-            return queryContainer.get(name);
+            return GqlBuilder.from(queryContainer.get(name));
+          } else if(_.isString(name)) {
+            // allow to use string gql format
+            try {
+              const doc = utils.parse(name);
+              return GqlBuilder.from(doc);
+            } catch (err) {
+
+            }
           }
           throw Error(`Document [${name}] is not loaded`)
         }
