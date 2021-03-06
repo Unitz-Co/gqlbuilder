@@ -45,41 +45,39 @@ class GqlBuilder {
     return this;
   }
 
-  selection(path = 'user') {
-    // navigate to a path
-    // this.selection().add
-    let doc = this.getDefinition();
-    const paths = _.toPath(path);
-
-    for(const level of paths) {
-      console.log('alsdlasd', level);
-    }
-
-    console.log('pathathathat', path, paths, this.getDefinition());
-  }
-
   update(path, ...values) {
+    const childrenKey = 'selectionSet.selections';
     let [val] = values;
     if(values.length >= 2 && _.isString(values[0])) {
       // support prop, value format
       val = { [values[0]] : values[1]};
     }
-    // navigate to a path
-    let target = this.getDefinition();
+    let target;
     let parent = null;
-    const paths = _.toPath(path);
-
-    for(const level of paths) {
-      const selections = _.get(target, 'selectionSet.selections', []);
-      const selection = _.find(selections, (item) => level === _.get(item, 'name.value'));
-      if(selection) {
-        // found node
-        parent = target;
-        target = selection;
-      } else {
-        // not found
-        console.log('not found')
+    const definition = this.getDefinition();
+    if(values.length === 0) {
+      // support root path update
+      target = _.first(_.get(definition, childrenKey, []));
+      val = path;
+    } else {
+      // navigate to a path
+      target = definition;
+      const paths = _.toPath(path);
+      for(const level of paths) {
+        const selections = _.get(target, childrenKey, []);
+        const selection = _.find(selections, (item) => level === _.get(item, 'name.value'));
+        if(selection) {
+          // found node
+          parent = target;
+          target = selection;
+        } else {
+          // not found
+          console.log('not found');
+        }
       }
+    }
+    if(!target) {
+      throw Error('Could ot find ast node to apply change');
     }
     utils.updateSelection(target, utils.resolveValue(val, () => this));
     return this;

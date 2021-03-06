@@ -101,8 +101,6 @@ const isSelectionString = (str) => {
   return ((str.indexOf('{') > -1) && (str.indexOf('}') > -1));
 };
 
-
-
 function stringify(obj_from_json) {
   if (false && obj_from_json instanceof EnumType) {
       return obj_from_json.value;
@@ -130,8 +128,9 @@ function stringify(obj_from_json) {
 }
 
 const objToArgsNode = (obj) => {  
-  let rtn = stringify(obj);
-  return rtn.slice(1, rtn.length - 1);
+  let rtn = _.trim(stringify(obj));
+  rtn = rtn.slice(1, rtn.length - 1);
+  return rtn;
 }
 
 
@@ -153,7 +152,10 @@ const utils = {
   // utils functions for arguments node
   arguments: {
     isAst: (val) => {
-      return _.isArray(val);
+      return (true
+        && _.isArray(val)
+        && (!val.length || _.every(val, item => _.has(item, 'name')))
+      );
     },
     toAst: (val) => {
       if(!val) return [];
@@ -265,7 +267,10 @@ const utils = {
   // utils functions for selections node
   selections: {
     isAst: (val) => {
-      return _.isArray(val);
+      return (true
+        && _.isArray(val)
+        && (!val.length || _.every(val, item => _.has(item, 'name')))
+      );
     },
     toAst: (val) => {
       if(!val) return [];
@@ -273,6 +278,9 @@ const utils = {
         return utils.selections.strToAst(val);
       } else if(utils.selections.isAst(val)) {
         return val;
+      } else if(_.isArray(val)) {
+        // array of selection in string, join then concat
+        return _.flatten(val.map(item => utils.selections.toAst(item)));
       }
       throw Error(`Unknown selections input: ${val}`);
     },
@@ -372,7 +380,11 @@ const utils = {
         });
         _.set(sel, prop, { kind: 'Name', value: resolveValue(val, getContext) });
       } else if(prop === 'name') {
-        _.set(sel, [prop, 'value'], val);
+        const getContext = () => ({
+          node: sel[prop],
+          value: _.get(sel, [prop, 'value']),
+        });
+        _.set(sel, [prop, 'value'], resolveValue(val, getContext));
       } else if(prop === 'arguments') {
         let node = _.get(sel, 'arguments', []);
         let updatedVal = val;
@@ -389,9 +401,7 @@ const utils = {
           updatedVal = resolveValue(updatedVal, getContext);
         }
         // build arguments node
-        if(_.isString(updatedVal)) {
-          updatedVal = utils.arguments.strToAst(updatedVal);
-        }
+        updatedVal = utils.arguments.toAst(updatedVal);
 
         _.set(sel, 'arguments', updatedVal);
       } else if(prop === 'selections') {
@@ -411,9 +421,7 @@ const utils = {
           updatedVal = resolveValue(updatedVal, getContext);
         }
 
-        if(_.isString(updatedVal)) {
-          updatedVal = utils.selections.strToAst(updatedVal);
-        }
+        updatedVal = utils.selections.toAst(updatedVal);
 
         _.set(sel, 'selectionSet.selections', updatedVal);
       }
