@@ -3,6 +3,8 @@ const { getMainDefinition } = require('@apollo/client/utilities');
 
 const utils = require('./utils');
 
+const isRootPath = path => (path !== 0 && !path);
+
 class GqlBuilder {
   doc;
   static from(doc) {
@@ -55,10 +57,12 @@ class GqlBuilder {
     let target;
     let parent = null;
     const definition = this.getDefinition();
+    // support root path update
     if(values.length === 0) {
-      // support root path update
       target = _.first(_.get(definition, childrenKey, []));
       val = path;
+    } else if(isRootPath(path)) {
+      target = _.first(_.get(definition, childrenKey, []));
     } else {
       // navigate to a path
       target = definition;
