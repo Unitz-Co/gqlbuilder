@@ -1,10 +1,22 @@
 {
-  "name": "@uz/gqlbuilder",
-  "version": "1.0.0",
-  "private": true,
+  "name": "@unitz/gqlbuilder",
+  "version": "1.0.1",
+  "description": "GraphQL query builder lib",
+  "private": false,
   "main": "dist/gqlbuilder.cjs.js",
   "module": "dist/gqlbuilder.esm.js",
   "browser": "dist/gqlbuilder.umd.js",
+  "keywords": [
+    "graphql",
+    "builder"
+  ],
+  "homepage": "https://github.com/Unitz-Co/gqlbuilder.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Unitz-Co/gqlbuilder.git"
+  },
+  "author": "Hung Tran <hungtran0203@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "build": "rollup -c",
     "build:watch": "rollup -c -w",

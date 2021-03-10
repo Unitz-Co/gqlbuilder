@@ -1,0 +1,13 @@
+.gitignore
+CHANGELOG.md
+DESIGN.md
+rollup.config.js
+babel.config.js
+AUTHORS
+.idea
+ROADMAP.md
+
+# ignore .js.map files
+*.js.map
+**.map
+**.**.map
