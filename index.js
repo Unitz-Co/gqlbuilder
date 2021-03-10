@@ -1,17 +1,16 @@
 const _ = require('lodash');
-const { getMainDefinition } = require('@apollo/client/utilities');
+const { getMainDefinition } = require('./helpers');
 
 const utils = require('./utils');
 
 const isRootPath = path => (path !== 0 && !path);
 
 class GqlBuilder {
-  doc;
   static from(doc) {
     // for string doc, try to load from queryContainer
     if(_.isString(doc)) {
       try {
-        doc = GqlBuilder.loadDocument(doc);
+        return GqlBuilder.loadDocument(doc);
       } catch (err) {
         console.log('Invalid document input')
       }
@@ -35,13 +34,15 @@ class GqlBuilder {
   }
 
   getDefinition() {
+    console.log('this.doc', this.doc);
     return getMainDefinition(this.doc);
   }
 
   // Gets/Sets to manupulate the gql doc
-  getOperation(operation) {
+  getOperation() {
     return _.get(this.getDefinition(), 'operation');
   }
+
   setOperation(operation) {
     _.set(this.getDefinition(), 'operation', operation);
     return this;

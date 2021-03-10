@@ -1,0 +1,270 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gqlbuilder set selection 1`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user {
+      id
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 2`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user {
+      id
+      profile {
+        id
+        display_name
+      }
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 3`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user {
+      id
+      profile {
+        id
+        display_name
+      }
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 4`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user_by_pk {
+      id
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 5`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user_by_pk {
+      id
+      profile {
+        id
+        display_name
+      }
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 6`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user_by_pk(id: \\"user_id\\") {
+      id
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 7`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user_by_pk(id: \\"user_id\\") {
+      id
+      profile {
+        id
+        display_name
+      }
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 8`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    user_by_pk(id: \\"user_id\\") {
+      id
+      profile {
+        id
+        display_name
+      }
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 9`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    id
+    presence {
+      id
+      status
+    }
+    profile {
+      id
+      display_name
+      avatar_url
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 10`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    id
+    presence {
+      id
+      status
+    }
+    profile {
+      id
+      display_name
+      avatar_url(limit: 1)
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder set selection 11`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    id
+    presence {
+      id
+      status
+    }
+    profile {
+      id
+      display_name
+      avatar_url(limit: 1)
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder update alias 1`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    id
+    newalPre: presence {
+      id
+      status
+    }
+    profile {
+      id
+      display_name
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder update alias 2`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  myuser: user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    id
+    presence {
+      id
+      status
+    }
+    profile {
+      id
+      display_name
+    }
+  }
+}
+",
+  ],
+}
+`;
+
+exports[`gqlbuilder update alias 3`] = `
+Object {
+  "args": Array [
+    "query QueryNewUsers {
+  rootuser: user(where: {presence: {status: {_eq: \\"new\\"}}}) {
+    id
+    presence {
+      id
+      status
+    }
+    profile {
+      id
+      display_name
+    }
+  }
+}
+",
+  ],
+}
+`;

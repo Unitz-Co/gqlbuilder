@@ -1,32 +1,148 @@
 const _ = require('lodash');
-const { GqlBuilder } = require('@vl/mod-utils/GqlBuilder');
-const { gql } = require('graphql-tag');
+// const { GqlBuilder } = require('@uz/gqlbuilder');
+const { GqlBuilder } = require('../index');
 
-console.log('GqlBuilderGqlBuilderGqlBuilder', GqlBuilder, gql);
-// GqlBuilder.loadDocument({
-//   QueryNewUsers: gql(`
-//     query QueryNewUsers {
-//       user(where: { presence: { status: { _eq: "new" } } }) {
-//         id
-//         presence {
-//           id
-//           status
-//         }
-//         profile {
-//           id
-//           display_name
-//         }
-//       }
-//     }
-//   `),
-//   // QueryUserPresence,
-//   // InsertOneUserPresence,
-//   // UpdateUserPresence,
-// });
+const gql = require('graphql-tag');
+const { beforeAll } = require('@jest/globals');
+
+GqlBuilder.loadDocument({
+  QueryNewUsers: gql(`
+    query QueryNewUsers {
+      user(where: { presence: { status: { _eq: "new" } } }) {
+        id
+        presence {
+          id
+          status
+        }
+        profile {
+          id
+          display_name
+        }
+      }
+    }
+  `),
+});
+
+beforeAll(() => {
+  console.snapshot = (...args) => {
+    console.log(...args);
+    expect({ args }).toMatchSnapshot();
+  }  
+});
+
+describe('gqlbuilder', () => {
+  const query = GqlBuilder.from('QueryNewUsers');
+
+  test('update alias', () => {
+
+    console.snapshot(query
+      .clone()
+      .update('user.presence', { alias: 'newalPre' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user', { alias: 'myuser' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update({ alias: 'rootuser' })
+      .toString()
+    );
+
+  });
+
+  
+  test('set selection', () => {
+
+    console.snapshot(query
+      .clone()
+      .update({ selections: 'user { id }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update({ selections: 'user { id profile { id display_name } }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update({ selections: () => 'user { id profile { id display_name } }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user', { selections: 'user_by_pk { id }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user', { selections: 'user_by_pk { id profile { id display_name } }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user', { selections: 'user_by_pk(id: "user_id") { id }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user', { selections: 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user', { selections: () => 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user.profile', { selections: 'id display_name avatar_url' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user.profile', { selections: 'id display_name avatar_url(limit: 1)' })
+      .toString()
+    );
+
+    console.snapshot(query
+      .clone()
+      .update('user.profile', { selections: () => 'id display_name avatar_url(limit: 1)' })
+      .toString()
+    );
+
+  });
 
 
+  
+  // test('update alias nested selection', () => {
+  //   // expect(sum(1, 2)).toMatchSnapshot();
+  //   const myQuery = query.clone()
+  //     .update('user.presence', { alias: 'newalPre' })
+  //   console.snapshot(myQuery.toString());
 
-// const query = GqlBuilder.from('QueryNewUsers');
+  //   const myQuery = query.clone()
+  //     .update('user', { alias: 'myuser' })
+
+  //     console.snapshot(myQuery.toString());
+
+  // });
+  
+})
+
 
 
 // const myQuery = query.clone()
