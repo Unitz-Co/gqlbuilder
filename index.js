@@ -34,7 +34,6 @@ class GqlBuilder {
   }
 
   getDefinition() {
-    console.log('this.doc', this.doc);
     return getMainDefinition(this.doc);
   }
 

@@ -21,6 +21,7 @@
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
     "watch": "concurrently 'yarn build:watch' 'yarn serve -l tcp://127.0.0.1'",
+    "clean": "rimraf ./dist",
     "test": "jest --runInBand",
     "test:u": "jest --runInBand --updateSnapshot",
     "test:watch": "jest --watch --coverage",

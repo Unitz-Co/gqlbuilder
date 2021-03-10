@@ -1,11 +1,25 @@
 .gitignore
 CHANGELOG.md
 DESIGN.md
+ROADMAP.md
+AUTHORS
+
 rollup.config.js
 babel.config.js
-AUTHORS
+jest.config.js
+
 .idea
-ROADMAP.md
+.env
+
+__test__/*
+
+coverage/*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+scripts/*.js
+
+stats_viz.html
 
 # ignore .js.map files
 *.js.map

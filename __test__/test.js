@@ -1,34 +1,5 @@
 const _ = require('lodash');
-// const { GqlBuilder } = require('@uz/gqlbuilder');
 const { GqlBuilder } = require('../index');
-
-const gql = require('graphql-tag');
-const { beforeAll } = require('@jest/globals');
-
-GqlBuilder.loadDocument({
-  QueryNewUsers: gql(`
-    query QueryNewUsers {
-      user(where: { presence: { status: { _eq: "new" } } }) {
-        id
-        presence {
-          id
-          status
-        }
-        profile {
-          id
-          display_name
-        }
-      }
-    }
-  `),
-});
-
-beforeAll(() => {
-  console.snapshot = (...args) => {
-    console.log(...args);
-    expect({ args }).toMatchSnapshot();
-  }  
-});
 
 describe('gqlbuilder', () => {
   const query = GqlBuilder.from('QueryNewUsers');
