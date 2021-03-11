@@ -102,7 +102,7 @@ const isSelectionString = (str) => {
 };
 
 function stringify(obj_from_json) {
-  if (false && obj_from_json instanceof EnumType) {
+  if (false) {
       return obj_from_json.value;
   }
   // variables should be prefixed with dollar sign and not quoted
