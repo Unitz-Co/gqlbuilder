@@ -177,7 +177,17 @@ const utils = {
       }
     },
     astToStr: (ast) => {
-
+      try {
+        const queryDoc = parse(`query args { args }`);
+        _.set(queryDoc, 'definitions.0.selectionSet.selections.0.arguments', ast);
+        let str = print(queryDoc);
+        str = str.slice((`query args {`.length), -2);
+        str = str.trim();
+        str = str.slice((`args(`.length), -1);
+        return str;
+      } catch (err) {
+        throw Error(`Parsing arguments ast "${ast}" error`);
+      }
     },
     // merge 2 arguments nodes
     merge: (node, other) => {
@@ -293,7 +303,15 @@ const utils = {
       }
     },
     astToStr: (ast) => {
-
+      try {
+        const queryDoc = parse(`query selections { selections }`);
+        _.set(queryDoc, 'definitions.0.selectionSet.selections', ast);
+        let str = print(queryDoc);
+        str = str.slice((`query selections {`.length - 1), -1);
+        return str;
+      } catch (err) {
+        throw Error(`Parsing selections ast "${ast}" error`);
+      }
     },
     // merge 2 selections nodes
     merge: (node, other) => {
