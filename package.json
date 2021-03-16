@@ -1,6 +1,6 @@
 {
   "name": "@unitz/gqlbuilder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GraphQL query builder lib",
   "private": false,
   "main": "dist/gqlbuilder.cjs.js",
