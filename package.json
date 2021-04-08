@@ -50,12 +50,10 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "24.9.0",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-import-graphql": "^2.7.0",
-    "babel-plugin-inline-dotenv": "^1.6.0",
     "babel-plugin-macros": "^3.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "concurrently": "4.1.2",
-    "graphql-tag": "^2.11.0",
+    "graphql-tag": "^2.9.2",
     "rollup": "^2.30.0",
     "rollup-plugin-filesize": "^9.1.1",
     "rollup-plugin-visualizer": "^4.2.0",
@@ -74,7 +72,7 @@
     "eslint": "^7.8.1",
     "eslint-plugin-autofix": "^1.0.2",
     "eslint-plugin-unused-imports": "^1.0.0",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-react": "^7.14.2"
   }
