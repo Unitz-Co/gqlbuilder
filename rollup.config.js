@@ -11,9 +11,7 @@ export default [
   // browser-friendly UMD build
   {
     input: 'index.js',
-    external: [
-      'graphql/language',
-    ],
+    external: ['graphql/language'],
     output: {
       name: 'gqlbuilder',
       exports: 'named',
@@ -27,9 +25,9 @@ export default [
         dependencies: true,
         // packagePath: path.resolve('../../package.json'),
         peerDependencies: false,
-      }),      
+      }),
       visualizer({
-        filename: 'stats_viz.html'
+        filename: 'stats_viz.html',
       }),
       filesize(),
       nodeResolve({
@@ -46,9 +44,7 @@ export default [
   // and ES module (for bundlers) build.
   {
     input: 'index.js',
-    external: [
-      'graphql/language',
-    ],
+    external: ['graphql/language'],
     output: {
       name: 'gqlbuilder',
       file: pkg.module,
@@ -60,9 +56,9 @@ export default [
         dependencies: true,
         // packagePath: path.resolve('../../package.json'),
         peerDependencies: false,
-      }),      
+      }),
       visualizer({
-        filename: 'stats_viz.html'
+        filename: 'stats_viz.html',
       }),
       filesize(),
       nodeResolve({
@@ -70,22 +66,20 @@ export default [
       }),
       babel({
         exclude: 'node_modules/**',
-        babelHelpers: 'bundled'
+        babelHelpers: 'bundled',
       }),
     ],
   },
 
-  // CommonJS (for Node)  
+  // CommonJS (for Node)
   {
     input: 'index.js',
-    external: [
-      'graphql/language',
-    ],
+    external: ['graphql/language'],
     output: {
       name: 'gqlbuilder',
       exports: 'named',
       file: pkg.main,
-      format: 'cjs'
+      format: 'cjs',
     },
     plugins: [
       autoExternal({
@@ -93,9 +87,9 @@ export default [
         dependencies: true,
         // packagePath: path.resolve('../../package.json'),
         peerDependencies: false,
-      }),      
+      }),
       visualizer({
-        filename: 'stats_viz.html'
+        filename: 'stats_viz.html',
       }),
       filesize(),
       nodeResolve({
@@ -107,5 +101,5 @@ export default [
         babelHelpers: 'bundled',
       }),
     ],
-  },  
+  },
 ];

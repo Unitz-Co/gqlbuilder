@@ -5,100 +5,61 @@ describe('gqlbuilder', () => {
   const query = GqlBuilder.from('QueryNewUsers');
 
   test('update alias', () => {
+    console.snapshot(query.clone().update('user.presence', { alias: 'newalPre' }).toString());
 
-    console.snapshot(query
-      .clone()
-      .update('user.presence', { alias: 'newalPre' })
-      .toString()
-    );
+    console.snapshot(query.clone().update('user', { alias: 'myuser' }).toString());
 
-    console.snapshot(query
-      .clone()
-      .update('user', { alias: 'myuser' })
-      .toString()
-    );
-
-    console.snapshot(query
-      .clone()
-      .update({ alias: 'rootuser' })
-      .toString()
-    );
-
+    console.snapshot(query.clone().update({ alias: 'rootuser' }).toString());
   });
 
-  
   test('set selection', () => {
+    console.snapshot(query.clone().update({ selections: 'user { id }' }).toString());
 
-    console.snapshot(query
-      .clone()
-      .update({ selections: 'user { id }' })
-      .toString()
+    console.snapshot(query.clone().update({ selections: 'user { id profile { id display_name } }' }).toString());
+
+    console.snapshot(
+      query
+        .clone()
+        .update({ selections: () => 'user { id profile { id display_name } }' })
+        .toString()
     );
 
-    console.snapshot(query
-      .clone()
-      .update({ selections: 'user { id profile { id display_name } }' })
-      .toString()
+    console.snapshot(query.clone().update('user', { selections: 'user_by_pk { id }' }).toString());
+
+    console.snapshot(
+      query.clone().update('user', { selections: 'user_by_pk { id profile { id display_name } }' }).toString()
     );
 
-    console.snapshot(query
-      .clone()
-      .update({ selections: () => 'user { id profile { id display_name } }' })
-      .toString()
+    console.snapshot(query.clone().update('user', { selections: 'user_by_pk(id: "user_id") { id }' }).toString());
+
+    console.snapshot(
+      query
+        .clone()
+        .update('user', { selections: 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
+        .toString()
     );
 
-    console.snapshot(query
-      .clone()
-      .update('user', { selections: 'user_by_pk { id }' })
-      .toString()
+    console.snapshot(
+      query
+        .clone()
+        .update('user', { selections: () => 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
+        .toString()
     );
 
-    console.snapshot(query
-      .clone()
-      .update('user', { selections: 'user_by_pk { id profile { id display_name } }' })
-      .toString()
+    console.snapshot(query.clone().update('user.profile', { selections: 'id display_name avatar_url' }).toString());
+
+    console.snapshot(
+      query.clone().update('user.profile', { selections: 'id display_name avatar_url(limit: 1)' }).toString()
     );
 
-    console.snapshot(query
-      .clone()
-      .update('user', { selections: 'user_by_pk(id: "user_id") { id }' })
-      .toString()
+    console.snapshot(
+      query
+        .clone()
+        .update('user.profile', { selections: () => 'id display_name avatar_url(limit: 1)' })
+        .toString()
     );
-
-    console.snapshot(query
-      .clone()
-      .update('user', { selections: 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
-      .toString()
-    );
-
-    console.snapshot(query
-      .clone()
-      .update('user', { selections: () => 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
-      .toString()
-    );
-
-    console.snapshot(query
-      .clone()
-      .update('user.profile', { selections: 'id display_name avatar_url' })
-      .toString()
-    );
-
-    console.snapshot(query
-      .clone()
-      .update('user.profile', { selections: 'id display_name avatar_url(limit: 1)' })
-      .toString()
-    );
-
-    console.snapshot(query
-      .clone()
-      .update('user.profile', { selections: () => 'id display_name avatar_url(limit: 1)' })
-      .toString()
-    );
-
   });
 
-
-  
   // test('update alias nested selection', () => {
   //   // expect(sum(1, 2)).toMatchSnapshot();
   //   const myQuery = query.clone()
@@ -111,10 +72,7 @@ describe('gqlbuilder', () => {
   //     console.snapshot(myQuery.toString());
 
   // });
-  
-})
-
-
+});
 
 // const myQuery = query.clone()
 //   .update('user.presence', { alias: 'newalPre' })
@@ -164,4 +122,3 @@ describe('gqlbuilder', () => {
 //   // .update('user', { selections: ({ node }) => node.add(`newobjec.id`) })
 
 // console.log('myQuerymyQuery', myQuery.toString());
-

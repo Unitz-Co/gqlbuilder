@@ -3,12 +3,12 @@ const { GqlBuilder } = require('../index');
 
 const gql = require('graphql-tag');
 
-if(!console.snapshot) {
+if (!console.snapshot) {
   console.snapshot = (...args) => {
     console.log(...args);
     expect({ args }).toMatchSnapshot();
-  }
-} 
+  };
+}
 
 GqlBuilder.loadDocument({
   QueryNewUsers: gql(`
@@ -28,5 +28,5 @@ GqlBuilder.loadDocument({
   `),
 });
 
-// change timeout 
+// change timeout
 jest.setTimeout(10 * 1000);
