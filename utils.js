@@ -9,6 +9,7 @@ const resolveValue = (val, ctx) => {
   return val;
 };
 
+// eslint-disable-next-line
 const _mergeNode = (node, other, utils) => {
   const customizer = (objValue, srcValue) => {
     if (_.isArray(objValue)) {
@@ -205,6 +206,7 @@ const utils = {
           if (itemPath.length) {
             utils.arguments.remove(node, itemPath);
           }
+          return item;
         });
         return node;
       }
@@ -325,6 +327,7 @@ const utils = {
           if (itemPath.length) {
             utils.selections.remove(node, itemPath);
           }
+          return item;
         });
         return node;
       }
@@ -433,6 +436,7 @@ const utils = {
       Object.keys(prop).map((key) => {
         const val = prop[key];
         utils.updateSelection(sel, key, val);
+        return key;
       });
     }
   },

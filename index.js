@@ -54,7 +54,7 @@ class GqlBuilder {
       val = { [values[0]]: values[1] };
     }
     let target;
-    let parent = null;
+    // let parent = null;
     const definition = this.getDefinition();
     // support root path update
     if (values.length === 0) {
@@ -71,7 +71,7 @@ class GqlBuilder {
         const selection = _.find(selections, (item) => level === _.get(item, 'name.value'));
         if (selection) {
           // found node
-          parent = target;
+          // parent = target;
           target = selection;
         } else {
           // not found
