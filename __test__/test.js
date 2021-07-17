@@ -21,13 +21,13 @@ describe('gqlbuilder', () => {
       query
         .clone()
         .update({ selections: () => 'user { id profile { id display_name } }' })
-        .toString(),
+        .toString()
     );
 
     console.snapshot(query.clone().update('user', { selections: 'user_by_pk { id }' }).toString());
 
     console.snapshot(
-      query.clone().update('user', { selections: 'user_by_pk { id profile { id display_name } }' }).toString(),
+      query.clone().update('user', { selections: 'user_by_pk { id profile { id display_name } }' }).toString()
     );
 
     console.snapshot(query.clone().update('user', { selections: 'user_by_pk(id: "user_id") { id }' }).toString());
@@ -36,27 +36,27 @@ describe('gqlbuilder', () => {
       query
         .clone()
         .update('user', { selections: 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
-        .toString(),
+        .toString()
     );
 
     console.snapshot(
       query
         .clone()
         .update('user', { selections: () => 'user_by_pk(id: "user_id") { id profile { id display_name } }' })
-        .toString(),
+        .toString()
     );
 
     console.snapshot(query.clone().update('user.profile', { selections: 'id display_name avatar_url' }).toString());
 
     console.snapshot(
-      query.clone().update('user.profile', { selections: 'id display_name avatar_url(limit: 1)' }).toString(),
+      query.clone().update('user.profile', { selections: 'id display_name avatar_url(limit: 1)' }).toString()
     );
 
     console.snapshot(
       query
         .clone()
         .update('user.profile', { selections: () => 'id display_name avatar_url(limit: 1)' })
-        .toString(),
+        .toString()
     );
   });
 

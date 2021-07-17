@@ -25,7 +25,7 @@ GqlBuilder.loadDocument({
         }
       }
     }
-  `),
+  `)
 });
 
 // change timeout

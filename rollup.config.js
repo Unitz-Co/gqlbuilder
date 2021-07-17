@@ -17,17 +17,17 @@ export default [
       exports: 'named',
       globals: { lodash: '_' },
       file: pkg.browser,
-      format: 'umd',
+      format: 'umd'
     },
     plugins: [
       autoExternal({
         builtins: true,
         dependencies: true,
         // packagePath: path.resolve('../../package.json'),
-        peerDependencies: false,
+        peerDependencies: false
       }),
       visualizer({
-        filename: 'stats_viz.html',
+        filename: 'stats_viz.html'
       }),
       filesize(),
       nodeResolve({
@@ -36,9 +36,9 @@ export default [
       commonjs(),
       babel({
         exclude: 'node_modules/**',
-        babelHelpers: 'bundled',
-      }),
-    ],
+        babelHelpers: 'bundled'
+      })
+    ]
   },
 
   // and ES module (for bundlers) build.
@@ -48,17 +48,17 @@ export default [
     output: {
       name: 'gqlbuilder',
       file: pkg.module,
-      format: 'es',
+      format: 'es'
     },
     plugins: [
       autoExternal({
         builtins: true,
         dependencies: true,
         // packagePath: path.resolve('../../package.json'),
-        peerDependencies: false,
+        peerDependencies: false
       }),
       visualizer({
-        filename: 'stats_viz.html',
+        filename: 'stats_viz.html'
       }),
       filesize(),
       nodeResolve({
@@ -66,9 +66,9 @@ export default [
       }),
       babel({
         exclude: 'node_modules/**',
-        babelHelpers: 'bundled',
-      }),
-    ],
+        babelHelpers: 'bundled'
+      })
+    ]
   },
 
   // CommonJS (for Node)
@@ -79,17 +79,17 @@ export default [
       name: 'gqlbuilder',
       exports: 'named',
       file: pkg.main,
-      format: 'cjs',
+      format: 'cjs'
     },
     plugins: [
       autoExternal({
         builtins: true,
         dependencies: true,
         // packagePath: path.resolve('../../package.json'),
-        peerDependencies: false,
+        peerDependencies: false
       }),
       visualizer({
-        filename: 'stats_viz.html',
+        filename: 'stats_viz.html'
       }),
       filesize(),
       nodeResolve({
@@ -98,8 +98,8 @@ export default [
       commonjs(),
       babel({
         exclude: 'node_modules/**',
-        babelHelpers: 'bundled',
-      }),
-    ],
-  },
+        babelHelpers: 'bundled'
+      })
+    ]
+  }
 ];

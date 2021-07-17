@@ -3,7 +3,7 @@ const { getMainDefinition } = require('./helpers');
 
 const utils = require('./utils');
 
-const isRootPath = path => path !== 0 && !path;
+const isRootPath = (path) => path !== 0 && !path;
 
 class GqlBuilder {
   static from(doc) {
@@ -68,7 +68,7 @@ class GqlBuilder {
       const paths = _.toPath(path);
       for (const level of paths) {
         const selections = _.get(target, childrenKey, []);
-        const selection = _.find(selections, item => level === _.get(item, 'name.value'));
+        const selection = _.find(selections, (item) => level === _.get(item, 'name.value'));
         if (selection) {
           // found node
           // parent = target;
@@ -84,7 +84,7 @@ class GqlBuilder {
     }
     utils.updateSelection(
       target,
-      utils.resolveValue(val, () => this),
+      utils.resolveValue(val, () => this)
     );
     return this;
   }
@@ -102,7 +102,7 @@ class GqlBuilder {
       // load doc via object[name: doc] array
       if (_.isArray(name)) {
         // _.pick style load support
-        return name.map(key => GqlBuilder.loadDocument(key));
+        return name.map((key) => GqlBuilder.loadDocument(key));
       } if (_.isObject(name)) {
         _.map(name, (val, key) => {
           GqlBuilder.loadDocument(key, val);

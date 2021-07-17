@@ -61,7 +61,7 @@ const findNodeByPath = (node, path, childrenKey) => {
 
   for (const level of paths) {
     const selections = _.get(target, childrenKey, []);
-    selectionIndex = _.findIndex(selections, item => level === _.get(item, 'name.value'));
+    selectionIndex = _.findIndex(selections, (item) => level === _.get(item, 'name.value'));
     if (selectionIndex > -1) {
       const selection = selections[selectionIndex];
       // found node
@@ -81,7 +81,7 @@ const listLeafNodePaths = (node, childrenKey) => {
   if (_.get(selections, 'length')) {
     const subPathsWithNodeName = selections.map((node) => {
       const subPaths = listLeafNodePaths(node, childrenKey);
-      return subPaths.map(item => [nodeName, ..._.castArray(item || [])]);
+      return subPaths.map((item) => [nodeName, ..._.castArray(item || [])]);
     });
     return _.flatten(subPathsWithNodeName);
   }
@@ -111,12 +111,12 @@ function stringify(obj_from_json) {
     return JSON.stringify(obj_from_json);
   }
   if (Array.isArray(obj_from_json)) {
-    return `[${obj_from_json.map(item => stringify(item)).join(', ')}]`;
+    return `[${obj_from_json.map((item) => stringify(item)).join(', ')}]`;
   }
   // Implements recursive object serialization according to JSON spec
   // but without quotes around the keys.
   const props = Object.keys(obj_from_json)
-    .map(key => `${key}: ${stringify(obj_from_json[key])}`)
+    .map((key) => `${key}: ${stringify(obj_from_json[key])}`)
     .join(', ');
 
   return `{${props}}`;
@@ -139,12 +139,12 @@ const utils = {
         throw Error(`Parsing alias string "${str}" error`);
       }
     },
-    astToStr: (ast) => {},
+    astToStr: (ast) => {}
   },
   // utils functions for arguments node
   arguments: {
     isAst: (val) => {
-      return true && _.isArray(val) && (!val.length || _.every(val, item => _.has(item, 'name')));
+      return true && _.isArray(val) && (!val.length || _.every(val, (item) => _.has(item, 'name')));
     },
     toAst: (val) => {
       if (!val) return [];
@@ -263,12 +263,12 @@ const utils = {
       }
 
       return node;
-    },
+    }
   },
   // utils functions for selections node
   selections: {
     isAst: (val) => {
-      return true && _.isArray(val) && (!val.length || _.every(val, item => _.has(item, 'name')));
+      return true && _.isArray(val) && (!val.length || _.every(val, (item) => _.has(item, 'name')));
     },
     toAst: (val) => {
       if (!val) return [];
@@ -280,7 +280,7 @@ const utils = {
       }
       if (_.isArray(val)) {
         // array of selection in string, join then concat
-        return _.flatten(val.map(item => utils.selections.toAst(item)));
+        return _.flatten(val.map((item) => utils.selections.toAst(item)));
       }
       throw Error(`Unknown selections input: ${val}`);
     },
@@ -376,7 +376,7 @@ const utils = {
       }
 
       return node;
-    },
+    }
   },
 
   updateSelection: (sel, prop, val) => {
@@ -384,13 +384,13 @@ const utils = {
       if (prop === 'alias') {
         const getContext = () => ({
           node: sel[prop],
-          value: _.get(sel, [prop, 'value']),
+          value: _.get(sel, [prop, 'value'])
         });
         _.set(sel, prop, { kind: 'Name', value: resolveValue(val, getContext) });
       } else if (prop === 'name') {
         const getContext = () => ({
           node: sel[prop],
-          value: _.get(sel, [prop, 'value']),
+          value: _.get(sel, [prop, 'value'])
         });
         _.set(sel, [prop, 'value'], resolveValue(val, getContext));
       } else if (prop === 'arguments') {
@@ -403,8 +403,8 @@ const utils = {
               merge: (...args) => utils.arguments.merge(node, ...args),
               set: (...args) => utils.arguments.set(node, ...args),
               remove: (...args) => utils.arguments.remove(node, ...args),
-              node,
-            },
+              node
+            }
           });
           updatedVal = resolveValue(updatedVal, getContext);
         }
@@ -423,8 +423,8 @@ const utils = {
               merge: (...args) => utils.selections.merge(node, ...args),
               set: (...args) => utils.selections.set(node, ...args),
               remove: (...args) => utils.selections.remove(node, ...args),
-              node,
-            },
+              node
+            }
           });
           updatedVal = resolveValue(updatedVal, getContext);
         }
@@ -483,7 +483,7 @@ const utils = {
     };
     const mergedData = _.mergeWith({ node }, { node: other }, customizer);
     return mergedData.node;
-  },
+  }
 };
 
 module.exports = utils;
