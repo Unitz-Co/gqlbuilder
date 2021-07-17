@@ -1,7 +1,7 @@
 // import _ from 'lodash';
+const gql = require('graphql-tag');
 const { GqlBuilder } = require('../index');
 
-const gql = require('graphql-tag');
 
 if (!console.snapshot) {
   console.snapshot = (...args) => {

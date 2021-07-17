@@ -3,7 +3,7 @@ const { getMainDefinition } = require('./helpers');
 
 const utils = require('./utils');
 
-const isRootPath = (path) => path !== 0 && !path;
+const isRootPath = path => path !== 0 && !path;
 
 class GqlBuilder {
   static from(doc) {
@@ -68,7 +68,7 @@ class GqlBuilder {
       const paths = _.toPath(path);
       for (const level of paths) {
         const selections = _.get(target, childrenKey, []);
-        const selection = _.find(selections, (item) => level === _.get(item, 'name.value'));
+        const selection = _.find(selections, item => level === _.get(item, 'name.value'));
         if (selection) {
           // found node
           // parent = target;
@@ -84,7 +84,7 @@ class GqlBuilder {
     }
     utils.updateSelection(
       target,
-      utils.resolveValue(val, () => this)
+      utils.resolveValue(val, () => this),
     );
     return this;
   }
@@ -98,29 +98,27 @@ class GqlBuilder {
         // for setting doc
         queryContainer.set(name, doc);
         return this;
-      } else {
-        // load doc via object[name: doc] array
-        if (_.isArray(name)) {
-          // _.pick style load support
-          return name.map((key) => GqlBuilder.loadDocument(key));
-        } else if (_.isObject(name)) {
-          _.map(name, (val, key) => {
-            GqlBuilder.loadDocument(key, val);
-          });
-          return this;
-        } else {
-          if (queryContainer.has(name)) {
-            return GqlBuilder.from(queryContainer.get(name));
-          } else if (_.isString(name)) {
-            // allow to use string gql format
-            try {
-              const doc = utils.parse(name);
-              return GqlBuilder.from(doc);
-            } catch (err) {}
-          }
-          throw Error(`Document [${name}] is not loaded`);
-        }
       }
+      // load doc via object[name: doc] array
+      if (_.isArray(name)) {
+        // _.pick style load support
+        return name.map(key => GqlBuilder.loadDocument(key));
+      } if (_.isObject(name)) {
+        _.map(name, (val, key) => {
+          GqlBuilder.loadDocument(key, val);
+        });
+        return this;
+      }
+      if (queryContainer.has(name)) {
+        return GqlBuilder.from(queryContainer.get(name));
+      } if (_.isString(name)) {
+        // allow to use string gql format
+        try {
+          const doc = utils.parse(name);
+          return GqlBuilder.from(doc);
+        } catch (err) {}
+      }
+      throw Error(`Document [${name}] is not loaded`);
     };
   })();
 

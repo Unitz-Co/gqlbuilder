@@ -16,9 +16,9 @@ const _mergeNode = (node, other, utils) => {
       const rtn = [...objValue];
       const matcher = (node, otherNode) => {
         return (
-          true &&
-          _.get(node, 'kind') === _.get(otherNode, 'kind') &&
-          _.get(node, 'name.value') === _.get(otherNode, 'name.value')
+          true
+          && _.get(node, 'kind') === _.get(otherNode, 'kind')
+          && _.get(node, 'name.value') === _.get(otherNode, 'name.value')
         );
       };
       const matchNode = (node) => {
@@ -61,7 +61,7 @@ const findNodeByPath = (node, path, childrenKey) => {
 
   for (const level of paths) {
     const selections = _.get(target, childrenKey, []);
-    selectionIndex = _.findIndex(selections, (item) => level === _.get(item, 'name.value'));
+    selectionIndex = _.findIndex(selections, item => level === _.get(item, 'name.value'));
     if (selectionIndex > -1) {
       const selection = selections[selectionIndex];
       // found node
@@ -81,13 +81,12 @@ const listLeafNodePaths = (node, childrenKey) => {
   if (_.get(selections, 'length')) {
     const subPathsWithNodeName = selections.map((node) => {
       const subPaths = listLeafNodePaths(node, childrenKey);
-      return subPaths.map((item) => [nodeName, ..._.castArray(item || [])]);
+      return subPaths.map(item => [nodeName, ..._.castArray(item || [])]);
     });
     return _.flatten(subPathsWithNodeName);
-  } else {
-    // this is the leaf node, just return the name of the node
-    return [nodeName];
   }
+  // this is the leaf node, just return the name of the node
+  return [nodeName];
 };
 
 const createContainerNode = (node, childrenKey) => {
@@ -102,24 +101,22 @@ const isSelectionString = (str) => {
 };
 
 function stringify(obj_from_json) {
-  if (false) {
-    return obj_from_json.value;
-  }
   // variables should be prefixed with dollar sign and not quoted
   // else if (obj_from_json instanceof VariableType) {
   //     return `$${obj_from_json.value}`;
   // }
   // Cheers to Derek: https://stackoverflow.com/questions/11233498/json-stringify-without-quotes-on-properties
-  else if (typeof obj_from_json !== 'object' || obj_from_json === null) {
+  if (typeof obj_from_json !== 'object' || obj_from_json === null) {
     // not an object, stringify using native function
     return JSON.stringify(obj_from_json);
-  } else if (Array.isArray(obj_from_json)) {
-    return `[${obj_from_json.map((item) => stringify(item)).join(', ')}]`;
+  }
+  if (Array.isArray(obj_from_json)) {
+    return `[${obj_from_json.map(item => stringify(item)).join(', ')}]`;
   }
   // Implements recursive object serialization according to JSON spec
   // but without quotes around the keys.
   const props = Object.keys(obj_from_json)
-    .map((key) => `${key}: ${stringify(obj_from_json[key])}`)
+    .map(key => `${key}: ${stringify(obj_from_json[key])}`)
     .join(', ');
 
   return `{${props}}`;
@@ -147,15 +144,17 @@ const utils = {
   // utils functions for arguments node
   arguments: {
     isAst: (val) => {
-      return true && _.isArray(val) && (!val.length || _.every(val, (item) => _.has(item, 'name')));
+      return true && _.isArray(val) && (!val.length || _.every(val, item => _.has(item, 'name')));
     },
     toAst: (val) => {
       if (!val) return [];
       if (_.isString(val)) {
         return utils.arguments.strToAst(val);
-      } else if (_.isPlainObject(val)) {
+      }
+      if (_.isPlainObject(val)) {
         return utils.arguments.strToAst(objToArgsNode(val));
-      } else if (utils.arguments.isAst(val)) {
+      }
+      if (utils.arguments.isAst(val)) {
         return val;
       }
       throw Error(`Unknown arguments input: ${val}`);
@@ -170,12 +169,12 @@ const utils = {
     },
     astToStr: (ast) => {
       try {
-        const queryDoc = parse(`query args { args }`);
+        const queryDoc = parse('query args { args }');
         _.set(queryDoc, 'definitions.0.selectionSet.selections.0.arguments', ast);
         let str = print(queryDoc);
-        str = str.slice(`query args {`.length, -2);
+        str = str.slice('query args {'.length, -2);
         str = str.trim();
-        str = str.slice(`args(`.length, -1);
+        str = str.slice('args('.length, -1);
         return str;
       } catch (err) {
         throw Error(`Parsing arguments ast "${ast}" error`);
@@ -247,39 +246,41 @@ const utils = {
         // set value to current selection
         node.splice(0, node.length, ...newVal);
         return node;
-      } else {
-        const [path, value] = args;
-        const newVal = utils.arguments.toAst(value);
-
-        const containerNode = createContainerNode(node, childrenKey);
-        const found = findNodeByPath(containerNode, path, childrenKey);
-        if (found) {
-          const [, , foundPaths] = found;
-          const index = foundPaths.pop();
-          if (index > -1) {
-            _.set(containerNode, [...foundPaths, index], newVal);
-          }
-        } else {
-          console.log(`Arguments for "${path}" not found`);
-        }
       }
+      const [path, value] = args;
+      const newVal = utils.arguments.toAst(value);
+
+      const containerNode = createContainerNode(node, childrenKey);
+      const found = findNodeByPath(containerNode, path, childrenKey);
+      if (found) {
+        const [, , foundPaths] = found;
+        const index = foundPaths.pop();
+        if (index > -1) {
+          _.set(containerNode, [...foundPaths, index], newVal);
+        }
+      } else {
+        console.log(`Arguments for "${path}" not found`);
+      }
+
       return node;
     },
   },
   // utils functions for selections node
   selections: {
     isAst: (val) => {
-      return true && _.isArray(val) && (!val.length || _.every(val, (item) => _.has(item, 'name')));
+      return true && _.isArray(val) && (!val.length || _.every(val, item => _.has(item, 'name')));
     },
     toAst: (val) => {
       if (!val) return [];
       if (_.isString(val)) {
         return utils.selections.strToAst(val);
-      } else if (utils.selections.isAst(val)) {
+      }
+      if (utils.selections.isAst(val)) {
         return val;
-      } else if (_.isArray(val)) {
+      }
+      if (_.isArray(val)) {
         // array of selection in string, join then concat
-        return _.flatten(val.map((item) => utils.selections.toAst(item)));
+        return _.flatten(val.map(item => utils.selections.toAst(item)));
       }
       throw Error(`Unknown selections input: ${val}`);
     },
@@ -293,10 +294,10 @@ const utils = {
     },
     astToStr: (ast) => {
       try {
-        const queryDoc = parse(`query selections { selections }`);
+        const queryDoc = parse('query selections { selections }');
         _.set(queryDoc, 'definitions.0.selectionSet.selections', ast);
         let str = print(queryDoc);
-        str = str.slice(`query selections {`.length - 1, -1);
+        str = str.slice('query selections {'.length - 1, -1);
         return str;
       } catch (err) {
         throw Error(`Parsing selections ast "${ast}" error`);
@@ -358,22 +359,22 @@ const utils = {
         // set value to current selection
         node.splice(0, node.length, ...newVal);
         return node;
-      } else {
-        const [path, value] = args;
-        const newVal = utils.selections.toAst(value);
-
-        const containerNode = createContainerNode(node, childrenKey);
-        const found = findNodeByPath(containerNode, path, childrenKey);
-        if (found) {
-          const [, , foundPaths] = found;
-          const index = foundPaths.pop();
-          if (index > -1) {
-            _.set(containerNode, [...foundPaths, index], newVal);
-          }
-        } else {
-          console.log(`Selection for path "${path}" not found`);
-        }
       }
+      const [path, value] = args;
+      const newVal = utils.selections.toAst(value);
+
+      const containerNode = createContainerNode(node, childrenKey);
+      const found = findNodeByPath(containerNode, path, childrenKey);
+      if (found) {
+        const [, , foundPaths] = found;
+        const index = foundPaths.pop();
+        if (index > -1) {
+          _.set(containerNode, [...foundPaths, index], newVal);
+        }
+      } else {
+        console.log(`Selection for path "${path}" not found`);
+      }
+
       return node;
     },
   },
@@ -393,7 +394,7 @@ const utils = {
         });
         _.set(sel, [prop, 'value'], resolveValue(val, getContext));
       } else if (prop === 'arguments') {
-        let node = _.get(sel, 'arguments', []);
+        const node = _.get(sel, 'arguments', []);
         let updatedVal = val;
         if (_.isFunction(updatedVal)) {
           const getContext = () => ({
@@ -412,7 +413,7 @@ const utils = {
 
         _.set(sel, 'arguments', updatedVal);
       } else if (prop === 'selections') {
-        let node = _.get(sel, 'selectionSet.selections', []);
+        const node = _.get(sel, 'selectionSet.selections', []);
         let updatedVal = val;
 
         if (_.isFunction(updatedVal)) {
@@ -450,9 +451,9 @@ const utils = {
         const rtn = [...objValue];
         const matcher = (node, otherNode) => {
           return (
-            true &&
-            _.get(node, 'kind') === _.get(otherNode, 'kind') &&
-            _.get(node, 'name.value') === _.get(otherNode, 'name.value')
+            true
+            && _.get(node, 'kind') === _.get(otherNode, 'kind')
+            && _.get(node, 'name.value') === _.get(otherNode, 'name.value')
           );
         };
         const matchNode = (node) => {
